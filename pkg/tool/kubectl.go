@@ -37,33 +37,9 @@ func (k Kubectl) CreateNamespace(namespace string) error {
 // namespace and, eventually, the namespace itself are force-deleted.
 func (k Kubectl) DeleteNamespace(namespace string) {
 	fmt.Printf("Deleting namespace %q...\n", namespace)
-	timeoutSec := "180s"
-	err := k.exec.RunProcess("kubectl",
-		fmt.Sprintf("--request-timeout=%s", k.timeout),
-		"delete", "namespace", namespace, "--timeout", timeoutSec)
-	if err != nil {
-		fmt.Printf("Namespace %q did not terminate after %s.\n", namespace, timeoutSec)
-	}
-
 	if k.getNamespace(namespace) {
-		fmt.Printf("Namespace %q did not terminate after %s.\n", namespace, timeoutSec)
-
-		fmt.Println("Force-deleting everything...")
-		err = k.exec.RunProcess("kubectl",
-			fmt.Sprintf("--request-timeout=%s", k.timeout),
-			"delete", "all", "--namespace", namespace, "--all", "--force",
-			"--grace-period=0")
-		if err != nil {
-			fmt.Printf("Error deleting everything in the namespace %v: %v", namespace, err)
-		}
-
-		// Give it some more time to be deleted by K8s
-		time.Sleep(5 * time.Second)
-
-		if k.getNamespace(namespace) {
-			if err := k.forceNamespaceDeletion(namespace); err != nil {
-				fmt.Println("Error force deleting namespace:", err)
-			}
+		if err := k.forceNamespaceDeletion(namespace); err != nil {
+			fmt.Println("Error force deleting namespace:", err)
 		}
 	}
 }
@@ -136,7 +112,7 @@ func (k Kubectl) forceNamespaceDeletion(namespace string) error {
 	err = k.exec.RunProcess("kubectl",
 		fmt.Sprintf("--request-timeout=%s", k.timeout),
 		"delete", "namespace", namespace, "--force", "--grace-period=0",
-		"--ignore-not-found=true")
+		"--ignore-not-found=true", "--wait=false")
 	if err != nil {
 		fmt.Println("Error deleting namespace:", err)
 		return err
