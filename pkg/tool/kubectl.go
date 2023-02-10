@@ -46,7 +46,7 @@ func (k Kubectl) DeleteNamespace(namespace string) {
 
 func (k Kubectl) forceNamespaceDeletion(namespace string) error {
 	// Getting the namespace json to remove the finalizer
-	cmdOutput, err := k.exec.RunProcessAndCaptureOutput("kubectl",
+	cmdOutput, err := k.exec.RunProcessAndCaptureStdout("kubectl",
 		fmt.Sprintf("--request-timeout=%s", k.timeout),
 		"get", "namespace", namespace, "--output=json")
 	if err != nil {
@@ -122,7 +122,7 @@ func (k Kubectl) forceNamespaceDeletion(namespace string) error {
 }
 
 func (k Kubectl) WaitForDeployments(namespace string, selector string) error {
-	output, err := k.exec.RunProcessAndCaptureOutput("kubectl",
+	output, err := k.exec.RunProcessAndCaptureStdout("kubectl",
 		fmt.Sprintf("--request-timeout=%s", k.timeout),
 		"get", "deployments", "--namespace", namespace, "--selector", selector,
 		"--output", "jsonpath={.items[*].metadata.name}")
@@ -145,7 +145,7 @@ func (k Kubectl) WaitForDeployments(namespace string, selector string) error {
 		//
 		// Just after rollout, pods from the previous deployment revision may still be in a
 		// terminating state.
-		unavailable, err := k.exec.RunProcessAndCaptureOutput("kubectl",
+		unavailable, err := k.exec.RunProcessAndCaptureStdout("kubectl",
 			fmt.Sprintf("--request-timeout=%s", k.timeout),
 			"get", "deployment", deployment, "--namespace", namespace, "--output",
 			`jsonpath={.status.unavailableReplicas}`)
@@ -161,7 +161,7 @@ func (k Kubectl) WaitForDeployments(namespace string, selector string) error {
 }
 
 func (k Kubectl) GetPodsforDeployment(namespace string, deployment string) ([]string, error) {
-	jsonString, _ := k.exec.RunProcessAndCaptureOutput("kubectl",
+	jsonString, _ := k.exec.RunProcessAndCaptureStdout("kubectl",
 		fmt.Sprintf("--request-timeout=%s", k.timeout),
 		"get", "deployment", deployment, "--namespace", namespace, "--output=json")
 	var deploymentMap map[string]interface{}
@@ -187,7 +187,7 @@ func (k Kubectl) GetPodsforDeployment(namespace string, deployment string) ([]st
 func (k Kubectl) GetPods(args ...string) ([]string, error) {
 	kubectlArgs := []string{"get", "pods"}
 	kubectlArgs = append(kubectlArgs, args...)
-	pods, err := k.exec.RunProcessAndCaptureOutput("kubectl",
+	pods, err := k.exec.RunProcessAndCaptureStdout("kubectl",
 		fmt.Sprintf("--request-timeout=%s", k.timeout), kubectlArgs)
 	if err != nil {
 		return nil, err
