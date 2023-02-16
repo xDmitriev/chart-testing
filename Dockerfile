@@ -1,5 +1,7 @@
 FROM alpine:3.17
 
+RUN apk update && apk upgrade
+
 RUN apk --no-cache add \
     bash \
     curl>7.77.0-r0 \

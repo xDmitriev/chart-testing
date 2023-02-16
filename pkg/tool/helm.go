@@ -71,7 +71,7 @@ func (h Helm) InstallWithValues(chart string, valuesFile string, namespace strin
 
 func (h Helm) Upgrade(chart string, namespace string, release string) error {
 	if err := h.exec.RunProcess("helm", "upgrade", release, chart, "--namespace", namespace,
-		"--reuse-values", "--wait", h.extraArgs, h.extraSetArgs); err != nil {
+		"--wait", h.extraArgs, h.extraSetArgs); err != nil {
 		return err
 	}
 
