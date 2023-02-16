@@ -1,6 +1,6 @@
-module github.com/helm/chart-testing/v3
+module github.com/xdmitriev/chart-testing/v3
 
-go 1.20
+go 1.19
 
 require (
 	github.com/MakeNowJust/heredoc v1.0.0

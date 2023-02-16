@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/go-retryablehttp"
-	"github.com/helm/chart-testing/v3/pkg/exec"
+	"github.com/xdmitriev/chart-testing/v3/pkg/exec"
 )
 
 type Kubectl struct {

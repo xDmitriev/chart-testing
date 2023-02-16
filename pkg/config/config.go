@@ -25,10 +25,10 @@ import (
 
 	"github.com/mitchellh/go-homedir"
 
-	"github.com/helm/chart-testing/v3/pkg/util"
 	"github.com/spf13/cobra"
 	flag "github.com/spf13/pflag"
 	"github.com/spf13/viper"
+	"github.com/xdmitriev/chart-testing/v3/pkg/util"
 )
 
 var (

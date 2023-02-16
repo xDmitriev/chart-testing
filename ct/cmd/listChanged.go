@@ -19,9 +19,9 @@ import (
 
 	"github.com/MakeNowJust/heredoc"
 
-	"github.com/helm/chart-testing/v3/pkg/chart"
-	"github.com/helm/chart-testing/v3/pkg/config"
 	"github.com/spf13/cobra"
+	"github.com/xdmitriev/chart-testing/v3/pkg/chart"
+	"github.com/xdmitriev/chart-testing/v3/pkg/config"
 )
 
 func newListChangedCmd() *cobra.Command {

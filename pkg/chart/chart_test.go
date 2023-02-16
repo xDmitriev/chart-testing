@@ -19,10 +19,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/helm/chart-testing/v3/pkg/config"
-	"github.com/helm/chart-testing/v3/pkg/util"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"github.com/xdmitriev/chart-testing/v3/pkg/config"
+	"github.com/xdmitriev/chart-testing/v3/pkg/util"
 )
 
 type fakeGit struct{}
